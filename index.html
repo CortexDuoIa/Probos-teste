@@ -27,6 +27,12 @@
         .message-container {
             scroll-behavior: smooth;
         }
+        .content-panel {
+            display: none; /* Hidden by default, JS will manage visibility */
+        }
+        .content-panel.active {
+            display: flex; /* Show active panel */
+        }
     </style>
 </head>
 <body class="bg-gray-100 antialiased">
@@ -38,20 +44,20 @@
             <h1 class="text-xl font-bold text-gray-800">Central.AI</h1>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="#" class="flex items-center px-4 py-2 text-gray-700 bg-gray-200 rounded-lg font-semibold">
+            <a href="#" id="link-dashboard" onclick="changeTab('dashboard')" class="sidebar-link flex items-center px-4 py-2 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                 Dashboard
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            <a href="#" id="link-conversas" onclick="changeTab('conversas')" class="sidebar-link flex items-center px-4 py-2 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path d="M8 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
                 Conversas
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+            <a href="#" id="link-relatorios" onclick="changeTab('relatorios')" class="sidebar-link flex items-center px-4 py-2 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a1 1 0 001 1h1.586l.707.707A1 1 0 007 15h6a1 1 0 00.707-.293l.707-.707H16a1 1 0 001-1V5a1 1 0 000-2H3zm6.5 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" clip-rule="evenodd" /><path d="M3 5a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1h-1.586l-.707.707A1 1 0 0113 15H7a1 1 0 01-.707-.293L5.586 14H4a1 1 0 01-1-1V5z" /></svg>
                 Relatórios
             </a>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0L7.86 5.89c-.33.13-.65.31-.94.53l-2.43-1.4c-1.32-.77-2.88.2-2.35 1.62l1.28 2.22c.21.36.32.76.32 1.17L3 10l.02.49c0 .41-.11.81-.32 1.17l-1.28 2.22c-.53 1.42 1.03 2.39 2.35 1.62l2.43-1.4c.29-.22.61-.4.94-.53l.65 2.72c.38 1.56 2.6 1.56 2.98 0l.65-2.72c.33.13.65.31.94.53l2.43 1.4c1.32.77 2.88-.2 2.35-1.62l-1.28-2.22c-.21-.36-.32-.76-.32-1.17L17 10l-.02-.49c0-.41.11-.81.32-1.17l1.28-2.22c.53-1.42-1.03-2.39-2.35-1.62l-2.43 1.4c-.29.22-.61.4-.94.53l-.65-2.72zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
+            <a href="#" id="link-configuracoes" onclick="changeTab('configuracoes')" class="sidebar-link flex items-center px-4 py-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0L7.86 5.89c-.33.13-.65.31-.94.53l-2.43-1.4c-1.32-.77-2.88.2-2.35 1.62l1.28 2.22c.21.36.32.76.32 1.17L3 10l.02.49c0 .41-.11.81-.32 1.17l-1.28 2.22c-.53 1.42 1.03 2.39 2.35 1.62l2.43-1.4c.29-.22.61-.4.94-.53l.65 2.72c.38 1.56 2.6 1.56 2.98 0l.65-2.72c.33.13.65.31.94.53l2.43 1.4c1.32.77 2.88-.2 2.35-1.62l-1.28-2.22c-.21-.36-.32-.76-.32-1.17L17 10l-.02-.49c0-.41.11-.81-.32-1.17l1.28-2.22c.53-1.42-1.03-2.39-2.35-1.62l-2.43 1.4c-.29-.22-.61-.4-.94-.53l-.65-2.72zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
                 Configurações
             </a>
         </nav>
@@ -59,62 +65,121 @@
 
     <!-- Main content -->
     <main class="flex-1 flex flex-col overflow-hidden">
-        <!-- Header -->
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
-            <div class="flex items-center">
+        
+        <!-- DASHBOARD CONTENT -->
+        <div id="content-dashboard" class="content-panel active flex-col h-full">
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+                <h2 class="text-2xl font-semibold text-gray-800">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-600">Olá, [Nome do Cliente]</p>
+                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=NC" alt="Avatar do cliente">
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.282-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.282.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Total de Leads (Mês)</p>
+                            <p class="text-2xl font-bold text-gray-800">1,254</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+                        <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.57l4.95-4.95" /></svg></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Leads Quentes Ativos</p>
+                            <p class="text-2xl font-bold text-gray-800">73</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Tempo Médio de Resposta</p>
+                            <p class="text-2xl font-bold text-gray-800">3 seg</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm flex items-center">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Conversas em Aberto</p>
+                            <p class="text-2xl font-bold text-gray-800">12</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONVERSAS CONTENT -->
+        <div id="content-conversas" class="content-panel flex-col h-full">
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
                 <h2 class="text-2xl font-semibold text-gray-800">Conversas</h2>
-            </div>
-            <div class="flex items-center space-x-4">
-                <p class="text-gray-600">Olá, [Nome do Cliente]</p>
-                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=NC" alt="Avatar do cliente">
-            </div>
-        </header>
-
-        <!-- Main Area -->
-        <div class="flex-1 flex overflow-hidden">
-            <!-- Conversations List -->
-            <div class="w-full lg:w-1/3 xl:w-1/4 border-r border-gray-200 bg-white overflow-y-auto">
-                <div class="p-4">
-                    <input type="text" placeholder="Buscar conversas..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <div id="filter-buttons" class="mt-4 flex flex-wrap gap-2">
-                        <button onclick="changeFilter('todos')" class="filter-btn bg-blue-600 text-white px-3 py-1 text-sm rounded-full">Todos</button>
-                        <button onclick="changeFilter('quente')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">🔥 Leads Quentes</button>
-                        <button onclick="changeFilter('novo')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">✨ Novos</button>
-                        <button onclick="changeFilter('finalizado')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">✅ Finalizados</button>
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-600">Olá, [Nome do Cliente]</p>
+                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=NC" alt="Avatar do cliente">
+                </div>
+            </header>
+            <div class="flex-1 flex overflow-hidden">
+                <div class="w-full lg:w-1/3 xl:w-1/4 border-r border-gray-200 bg-white overflow-y-auto">
+                    <div class="p-4">
+                        <input type="text" placeholder="Buscar conversas..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="filter-buttons" class="mt-4 flex flex-wrap gap-2">
+                            <button onclick="changeFilter('todos')" class="filter-btn bg-blue-600 text-white px-3 py-1 text-sm rounded-full">Todos</button>
+                            <button onclick="changeFilter('quente')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">🔥 Leads Quentes</button>
+                            <button onclick="changeFilter('novo')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">✨ Novos</button>
+                            <button onclick="changeFilter('finalizado')" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">✅ Finalizados</button>
+                        </div>
+                    </div>
+                    <div id="conversation-list" class="divide-y divide-gray-200"></div>
+                </div>
+                <div id="active-chat-container" class="flex-1 flex-col hidden lg:flex">
+                    <div id="chat-header" class="h-16 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-6"></div>
+                    <div id="message-container" class="flex-1 p-6 overflow-y-auto message-container"></div>
+                    <div class="bg-white p-4 border-t border-gray-200">
+                        <div class="relative">
+                            <input id="message-input" type="text" placeholder="Digite uma mensagem ou comando..." class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            <button onclick="sendMessage()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="conversation-list" class="divide-y divide-gray-200">
-                    <!-- Conversations will be injected here by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Active Chat -->
-            <div id="active-chat-container" class="flex-1 flex-col hidden lg:flex">
-                 <!-- Chat Header -->
-                <div id="chat-header" class="h-16 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-6">
-                    <!-- Header content will be injected here -->
-                </div>
-                <!-- Messages -->
-                <div id="message-container" class="flex-1 p-6 overflow-y-auto message-container">
-                    <!-- Messages will be injected here -->
-                </div>
-                <!-- Input -->
-                <div class="bg-white p-4 border-t border-gray-200">
-                    <div class="relative">
-                        <input type="text" placeholder="Digite uma mensagem ou comando..." class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
-                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
-                        </button>
+                <div id="chat-placeholder" class="flex-1 flex items-center justify-center lg:hidden">
+                    <div class="text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Selecione uma conversa</h3>
+                        <p class="mt-1 text-sm text-gray-500">Comece selecionando uma conversa da lista.</p>
                     </div>
                 </div>
             </div>
-             <!-- Placeholder for mobile/smaller screens -->
-            <div id="chat-placeholder" class="flex-1 flex-col items-center justify-center hidden lg:hidden">
-                <div class="text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900">Selecione uma conversa</h3>
-                    <p class="mt-1 text-sm text-gray-500">Comece selecionando uma conversa da lista ao lado.</p>
+        </div>
+
+        <!-- RELATÓRIOS CONTENT -->
+        <div id="content-relatorios" class="content-panel flex-col h-full">
+             <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+                <h2 class="text-2xl font-semibold text-gray-800">Relatórios</h2>
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-600">Olá, [Nome do Cliente]</p>
+                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=NC" alt="Avatar do cliente">
                 </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6 text-center">
+                 <h3 class="text-lg font-medium text-gray-700">Página de Relatórios em Construção</h3>
+                 <p class="text-gray-500 mt-2">Em breve, você poderá visualizar gráficos de desempenho e insights sobre suas conversas aqui.</p>
+            </div>
+        </div>
+
+        <!-- CONFIGURAÇÕES CONTENT -->
+        <div id="content-configuracoes" class="content-panel flex-col h-full">
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+                <h2 class="text-2xl font-semibold text-gray-800">Configurações</h2>
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-600">Olá, [Nome do Cliente]</p>
+                    <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/E2E8F0/4A5568?text=NC" alt="Avatar do cliente">
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-6 text-center">
+                 <h3 class="text-lg font-medium text-gray-700">Página de Configurações em Construção</h3>
+                 <p class="text-gray-500 mt-2">Em breve, você poderá gerenciar as configurações do seu chatbot e integrações aqui.</p>
             </div>
         </div>
     </main>
@@ -123,220 +188,132 @@
 <script>
     // --- DADOS MOCK (SIMULAÇÃO) ---
     const mockConversations = [
-        {
-            id: 1,
-            name: 'Ana Silva',
-            lastMessage: 'Olá! Gostaria de saber mais sobre o plano PRO.',
-            timestamp: '10:45',
-            channel: 'whatsapp',
-            status: 'quente',
-            unread: 2,
-            avatar: 'https://placehold.co/100x100/FBCFE8/831843?text=AS',
-            fullConversation: [
-                { sender: 'lead', text: 'Oi, bom dia!' },
-                { sender: 'bot', text: 'Olá, Ana! Seja bem-vinda à [Sua Empresa]. Meu nome é [Nome do Bot], seu assistente virtual. Como posso ajudar?' },
-                { sender: 'lead', text: 'Olá! Gostaria de saber mais sobre o plano PRO.' },
-            ]
-        },
-        {
-            id: 2,
-            name: 'Carlos Souza',
-            lastMessage: 'Qual o valor do frete para 11700-000?',
-            timestamp: '10:42',
-            channel: 'instagram',
-            status: 'novo',
-            unread: 0,
-            avatar: 'https://placehold.co/100x100/A5B4FC/1E3A8A?text=CS',
-            fullConversation: [
-                 { sender: 'lead', text: 'Qual o valor do frete para 11700-000?' },
-                 { sender: 'bot', text: 'Olá, Carlos. O frete para o seu CEP é de R$ 15,00. O prazo de entrega é de 3 dias úteis. Deseja adicionar ao carrinho?' },
-            ]
-        },
-        {
-            id: 3,
-            name: 'Juliana Pereira',
-            lastMessage: 'Obrigada, já consegui resolver!',
-            timestamp: 'Ontem',
-            channel: 'facebook',
-            status: 'finalizado',
-            unread: 0,
-            avatar: 'https://placehold.co/100x100/A7F3D0/052E16?text=JP',
-            fullConversation: [
-                 { sender: 'lead', text: 'Não consigo acessar meu painel.' },
-                 { sender: 'bot', text: 'Sem problemas, Juliana. Tente redefinir sua senha neste link: [link]. Se não funcionar, me avise.' },
-                 { sender: 'you', text: 'Olá Juliana, aqui é o [Seu Nome]. Conseguiu acessar?' },
-                 { sender: 'lead', text: 'Obrigada, já consegui resolver!' },
-            ]
-        },
-        {
-            id: 4,
-            name: 'Marcos Andrade',
-            lastMessage: 'Isso, muito obrigado. Vou analisar e retorno.',
-            timestamp: 'Ontem',
-            channel: 'whatsapp',
-            status: 'quente',
-            unread: 0,
-            avatar: 'https://placehold.co/100x100/FEF08A/713F12?text=MA',
-             fullConversation: [
-                 { sender: 'lead', text: 'Queria um orçamento para um e-commerce' },
-                 { sender: 'bot', text: 'Olá Marcos! Claro. Para te passar um orçamento preciso, você já vende online? Qual sua estimativa de produtos?' },
-                 { sender: 'lead', text: 'Ainda não vendo, uns 50 produtos' },
-                 { sender: 'you', text: 'Olá Marcos, obrigado pelas informações. Com base nisso, o plano ideal para você é o Business. Ele inclui X, Y, Z e o investimento é de R$ XXX/mês. Faz sentido para você?' },
-                 { sender: 'lead', text: 'Isso, muito obrigado. Vou analisar e retorno.' },
-            ]
-        },
-        {
-            id: 5,
-            name: 'Fernanda Costa',
-            lastMessage: 'Qual o horário de funcionamento de vocês?',
-            timestamp: 'Terça-feira',
-            channel: 'instagram',
-            status: 'novo',
-            unread: 0,
-            avatar: 'https://placehold.co/100x100/F5D0FE/701A75?text=FC',
-             fullConversation: [
-                 { sender: 'lead', text: 'Qual o horário de funcionamento de vocês?' },
-             ]
-        },
+        { id: 1, name: 'Ana Silva', lastMessage: 'Olá! Gostaria de saber mais sobre o plano PRO.', timestamp: '10:45', channel: 'whatsapp', status: 'quente', unread: 2, avatar: 'https://placehold.co/100x100/FBCFE8/831843?text=AS', fullConversation: [ { sender: 'lead', text: 'Oi, bom dia!' }, { sender: 'bot', text: 'Olá, Ana! Seja bem-vinda à [Sua Empresa]. Meu nome é [Nome do Bot], seu assistente virtual. Como posso ajudar?' }, { sender: 'lead', text: 'Olá! Gostaria de saber mais sobre o plano PRO.' }, ] },
+        { id: 2, name: 'Carlos Souza', lastMessage: 'Qual o valor do frete para 11700-000?', timestamp: '10:42', channel: 'instagram', status: 'novo', unread: 0, avatar: 'https://placehold.co/100x100/A5B4FC/1E3A8A?text=CS', fullConversation: [ { sender: 'lead', text: 'Qual o valor do frete para 11700-000?' }, { sender: 'bot', text: 'Olá, Carlos. O frete para o seu CEP é de R$ 15,00. O prazo de entrega é de 3 dias úteis. Deseja adicionar ao carrinho?' }, ] },
+        { id: 3, name: 'Juliana Pereira', lastMessage: 'Obrigada, já consegui resolver!', timestamp: 'Ontem', channel: 'facebook', status: 'finalizado', unread: 0, avatar: 'https://placehold.co/100x100/A7F3D0/052E16?text=JP', fullConversation: [ { sender: 'lead', text: 'Não consigo acessar meu painel.' }, { sender: 'bot', text: 'Sem problemas, Juliana. Tente redefinir sua senha neste link: [link]. Se não funcionar, me avise.' }, { sender: 'you', text: 'Olá Juliana, aqui é o [Seu Nome]. Conseguiu acessar?' }, { sender: 'lead', text: 'Obrigada, já consegui resolver!' }, ] },
+        { id: 4, name: 'Marcos Andrade', lastMessage: 'Isso, muito obrigado. Vou analisar e retorno.', timestamp: 'Ontem', channel: 'whatsapp', status: 'quente', unread: 0, avatar: 'https://placehold.co/100x100/FEF08A/713F12?text=MA', fullConversation: [ { sender: 'lead', text: 'Queria um orçamento para um e-commerce' }, { sender: 'bot', text: 'Olá Marcos! Claro. Para te passar um orçamento preciso, você já vende online? Qual sua estimativa de produtos?' }, { sender: 'lead', text: 'Ainda não vendo, uns 50 produtos' }, { sender: 'you', text: 'Olá Marcos, obrigado pelas informações. Com base nisso, o plano ideal para você é o Business. Ele inclui X, Y, Z e o investimento é de R$ XXX/mês. Faz sentido para você?' }, { sender: 'lead', text: 'Isso, muito obrigado. Vou analisar e retorno.' }, ] },
+        { id: 5, name: 'Fernanda Costa', lastMessage: 'Qual o horário de funcionamento de vocês?', timestamp: 'Terça-feira', channel: 'instagram', status: 'novo', unread: 0, avatar: 'https://placehold.co/100x100/F5D0FE/701A75?text=FC', fullConversation: [ { sender: 'lead', text: 'Qual o horário de funcionamento de vocês?' }, ] },
     ];
-
     // --- VARIÁVEIS DE ESTADO ---
     let activeFilter = 'todos';
     let activeConversationId = 1;
+    // --- ÍCONES E TAGS ---
+    const channelIcons = { whatsapp: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.839 8.839 0 01-4.444-1.235L2 18l1.235-3.556A8.963 8.963 0 012 10C2 5.134 5.582 2 10 2s8 3.134 8 4.134zM10 5a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>`, instagram: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.5 10a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>`, facebook: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" /></svg>`, };
+    const statusTags = { quente: `<span class="px-2 py-0.5 text-xs font-semibold text-red-800 bg-red-100 rounded-full">🔥 Lead Quente</span>`, novo: `<span class="px-2 py-0.5 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">✨ Novo</span>`, finalizado: `<span class="px-2 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 rounded-full">✅ Finalizado</span>`, };
 
-    // --- ÍCONES DOS CANAIS ---
-    const channelIcons = {
-        whatsapp: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.839 8.839 0 01-4.444-1.235L2 18l1.235-3.556A8.963 8.963 0 012 10C2 5.134 5.582 2 10 2s8 3.134 8 4.134zM10 5a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>`,
-        instagram: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.5 10a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>`,
-        facebook: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" /></svg>`,
-    };
-    
-    // --- TAGS DE STATUS ---
-    const statusTags = {
-        quente: `<span class="px-2 py-0.5 text-xs font-semibold text-red-800 bg-red-100 rounded-full">🔥 Lead Quente</span>`,
-        novo: `<span class="px-2 py-0.5 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">✨ Novo</span>`,
-        finalizado: `<span class="px-2 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 rounded-full">✅ Finalizado</span>`,
+    // --- FUNÇÕES DE NAVEGAÇÃO ---
+    function changeTab(tabName) {
+        document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+        document.getElementById(`content-${tabName}`).classList.add('active');
+        
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.remove('bg-gray-200', 'text-gray-700', 'font-semibold');
+            link.classList.add('text-gray-600', 'hover:bg-gray-100');
+        });
+        const activeLink = document.getElementById(`link-${tabName}`);
+        activeLink.classList.add('bg-gray-200', 'text-gray-700', 'font-semibold');
+        activeLink.classList.remove('text-gray-600', 'hover:bg-gray-100');
     }
 
-    // --- FUNÇÕES DE RENDERIZAÇÃO ---
+    // --- FUNÇÕES DA ABA CONVERSAS ---
     function renderConversationList() {
         const listContainer = document.getElementById('conversation-list');
-        listContainer.innerHTML = ''; // Limpa a lista
-
-        const filteredConversations = mockConversations.filter(convo => 
-            activeFilter === 'todos' || convo.status === activeFilter
-        );
-
+        listContainer.innerHTML = ''; 
+        const filteredConversations = mockConversations.filter(c => activeFilter === 'todos' || c.status === activeFilter);
         filteredConversations.forEach(convo => {
             const isActive = convo.id === activeConversationId;
             const activeClass = isActive ? 'bg-blue-50' : '';
             const unreadIndicator = convo.unread > 0 ? `<span class="bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">${convo.unread}</span>` : '';
-            
-            const convoElement = `
+            listContainer.innerHTML += `
                 <div id="convo-${convo.id}" class="conversation-item p-4 flex items-center cursor-pointer hover:bg-gray-50 ${activeClass}" onclick="selectConversation(${convo.id})">
                     <img class="h-12 w-12 rounded-full object-cover mr-4" src="${convo.avatar}" alt="Avatar de ${convo.name}">
-                    <div class="flex-1">
+                    <div class="flex-1 overflow-hidden">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-md font-semibold text-gray-800">${convo.name}</h3>
-                            <p class="text-xs text-gray-500">${convo.timestamp}</p>
+                            <h3 class="text-md font-semibold text-gray-800 truncate">${convo.name}</h3>
+                            <p class="text-xs text-gray-500 flex-shrink-0">${convo.timestamp}</p>
                         </div>
                         <div class="flex justify-between items-start mt-1">
-                           <p class="text-sm text-gray-600 truncate w-48">${convo.lastMessage}</p>
-                           <div class="flex items-center space-x-2">
+                           <p class="text-sm text-gray-600 truncate">${convo.lastMessage}</p>
+                           <div class="flex items-center space-x-2 flex-shrink-0">
                                 ${channelIcons[convo.channel]}
                                 ${unreadIndicator}
                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-            listContainer.innerHTML += convoElement;
+                </div>`;
         });
     }
 
     function renderActiveChat() {
         const conversation = mockConversations.find(c => c.id === activeConversationId);
         if (!conversation) return;
-
         const chatHeader = document.getElementById('chat-header');
         const messageContainer = document.getElementById('message-container');
-
-        // Render Header
         chatHeader.innerHTML = `
-            <div class="flex items-center">
-                <img class="h-10 w-10 rounded-full object-cover mr-3" src="${conversation.avatar}" alt="Avatar de ${conversation.name}">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900">${conversation.name}</h3>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                ${statusTags[conversation.status] || ''}
-                <button class="text-gray-500 hover:text-gray-800 p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" /></svg>
-                </button>
-            </div>
-        `;
-
-        // Render Messages
+            <div class="flex items-center"><img class="h-10 w-10 rounded-full object-cover mr-3" src="${conversation.avatar}" alt="Avatar de ${conversation.name}"><div><h3 class="text-lg font-semibold text-gray-900">${conversation.name}</h3></div></div>
+            <div class="flex items-center space-x-2">${statusTags[conversation.status] || ''}<button class="text-gray-500 hover:text-gray-800 p-2 rounded-full bg-gray-100 hover:bg-gray-200"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" /></svg></button></div>`;
         messageContainer.innerHTML = '';
         conversation.fullConversation.forEach(msg => {
-            const messageBubble = msg.sender === 'lead'
-                ? `<div class="flex justify-start mb-4">
-                        <div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-md">
-                            <p>${msg.text}</p>
-                        </div>
-                   </div>`
-                : `<div class="flex justify-end mb-4">
-                        <div class="bg-blue-600 text-white p-3 rounded-lg max-w-md">
-                            <p>${msg.text}</p>
-                        </div>
-                   </div>`;
-            messageContainer.innerHTML += messageBubble;
+            messageContainer.innerHTML += msg.sender === 'lead'
+                ? `<div class="flex justify-start mb-4"><div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-md"><p>${msg.text}</p></div></div>`
+                : `<div class="flex justify-end mb-4"><div class="bg-blue-600 text-white p-3 rounded-lg max-w-md"><p>${msg.text}</p></div></div>`;
         });
-
-        // Scroll to bottom
         messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 
-    // --- FUNÇÕES DE EVENTO ---
     function selectConversation(id) {
         activeConversationId = id;
         document.getElementById('active-chat-container').classList.remove('hidden');
-        document.getElementById('active-chat-container').classList.add('flex');
         document.getElementById('chat-placeholder').classList.add('hidden');
-        
-        renderConversationList(); // Re-render to update active class
+        renderConversationList();
         renderActiveChat();
     }
 
     function changeFilter(filter) {
         activeFilter = filter;
-        
-        // Update button styles
         document.querySelectorAll('#filter-buttons .filter-btn').forEach(btn => {
             btn.classList.remove('bg-blue-600', 'text-white');
             btn.classList.add('bg-gray-200', 'text-gray-700');
         });
         event.target.classList.add('bg-blue-600', 'text-white');
         event.target.classList.remove('bg-gray-200', 'text-gray-700');
-
         renderConversationList();
     }
-
+    
+    function sendMessage() {
+        const input = document.getElementById('message-input');
+        const text = input.value.trim();
+        if (text === '') return;
+        const conversation = mockConversations.find(c => c.id === activeConversationId);
+        if(conversation) {
+            conversation.fullConversation.push({ sender: 'you', text: text });
+            conversation.lastMessage = text;
+            input.value = '';
+            renderActiveChat();
+            renderConversationList();
+        }
+    }
+    
     // --- INICIALIZAÇÃO ---
     document.addEventListener('DOMContentLoaded', () => {
-        if(window.innerWidth < 1024) {
-           document.getElementById('chat-placeholder').classList.remove('hidden');
-           document.getElementById('chat-placeholder').classList.add('flex');
-        } else {
-            document.getElementById('active-chat-container').classList.remove('hidden');
-            document.getElementById('active-chat-container').classList.add('flex');
-        }
+        changeTab('dashboard'); // Define a aba inicial
         renderConversationList();
         renderActiveChat();
-    });
 
+        document.getElementById('message-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        if(window.innerWidth < 1024) {
+           document.getElementById('chat-placeholder').classList.remove('hidden');
+        } else {
+           document.getElementById('active-chat-container').classList.remove('hidden');
+        }
+    });
 </script>
 
 </body>
 </html>
+
